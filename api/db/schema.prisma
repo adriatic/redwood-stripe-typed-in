@@ -1,0 +1,28 @@
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+enum SubscriptionStatus {
+  init
+  success
+  failed
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = "native"
+}
+
+model User {
+  id                  Int                 @id @default(autoincrement())
+  email               String              @unique
+  hashedPassword      String
+  salt                String
+  roles               String[]
+  stripeClientSecret  String?
+  resetToken          String?
+  resetTokenExpiresAt DateTime?
+  subscriptionName    String?
+  subscriptionStatus  SubscriptionStatus?
+}
